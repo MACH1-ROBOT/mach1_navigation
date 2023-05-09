@@ -1,21 +1,70 @@
+/**
+ * @file vel_switch.cpp
+ * @author Julian Rendon (julianrendon514@gmail.com)
+ * @brief ROS node that handles robot navigation logic.
+ * @version 1.0
+ * @date 2023-05-08
+ *
+ * ROS node that switches between different types of velocity messages (from joystick, keyboard, or
+ * autonomous navigation) and publishes the prioritized velocity messages.
+ *
+ * The VelSwitch class defines the behavior of the node, with member functions for subscribing to
+ * different velocity messages, a task loop that selects the velocity message to publish
+ * based on the current navigation mode, and a constructor that sets up the node's publishers and
+ * subscribers.
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 #include <geometry_msgs/Twist.h>
 #include <mach1_msgs/VelStatus.h>
 #include <map>
 #include <mutex>
 #include <ros/ros.h>
 
+/**
+ * @briefClass that switches between velocity messages and prioritizes them based on the type of
+ * input it was received from.
+ *
+ */
 class VelSwitch
 {
   public:
+    /**
+     * @brief Enum class representing different Navigation modes.
+     *
+     */
     enum class NavMode
     {
         MODE_AUTO,
         MODE_JOY,
         MODE_KEY,
     };
+
+    /**
+     * @brief Construct a new Vel Switch object
+     *
+     */
     VelSwitch();
+
+    /**
+     * @brief Callback function that receives velocity messages from the joystick.
+     *
+     * @param vel[Twist] Incoming velocity message.
+     */
     void joystick_vel_callback(const geometry_msgs::Twist::ConstPtr &vel);
+
+    /**
+     * @brief Callback function that receives velocity messages from the keyboard.
+     *
+     * @param vel[Twist] Incoming velocity message.
+     */
     void keyboard_vel_callback(const geometry_msgs::Twist::ConstPtr &vel);
+
+    /**
+     * @brief Task loop which publishes velocity messages based on navigation mode.
+     *
+     */
     void loop();
 
   private:
