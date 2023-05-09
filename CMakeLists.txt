@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES mach1_navigation
   CATKIN_DEPENDS geometry_msgs roscpp std_msgs
 )
 
